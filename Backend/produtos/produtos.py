@@ -1,4 +1,4 @@
-from database.database import cursor,banco_dados
+from Backend.database.database import cursor,banco_dados
 from datetime import datetime, date
 
 
@@ -8,8 +8,16 @@ from datetime import datetime, date
 #ADICIONAR PRODUTO
 #===================================
 
-class produto:
-      def adicionar_produto():
+class Produto:
+      def __init__ (self, nome, codigo, quantidade, preco, validade ):
+
+            self.nome = nome
+            self.codigo = codigo
+            self.quantidade = quantidade
+            self.preco = preco
+            self.validade = validade
+
+      def adicionar_produto(self):
 
             codigo = str (input ('Codigo: '))
             nome = str (input('Nome do produto: '))
@@ -29,14 +37,15 @@ class produto:
             print (f'\n Código: {codigo} | Nome: {nome} | Quantidade: {quantidade} | Preço: {preco} | Validade: {validade}')
             print ('\033[3;30m Foi criado com sucesso!\033[m')
 
-            produto = { 
-                  "codigo": codigo, 
-                  "nome": nome,
-                  "quantidade": quantidade,
-                  "preco": preco,
-                  "validade": validade,
-                  "data_formatada": data_formatada
-            }
+            produto = Produto  (
+                  codigo,
+                  nome, 
+                  quantidade,
+                  preco,
+                  validade,
+                  data_formatada,
+            )
+                  
             return produto
             
 
@@ -73,10 +82,24 @@ class produto:
       def Procurar_produtos ():
             print (''' ===================== PROCURA DE PRODUTOS =====================''')
 
-            codigo_produto = int (input('Código do produto:'))
+            codigo_produto = (input('Código do produto:'))
 
-            cursor.execute('WHERE codigo = ? FROM produtos ', codigo_produto)
+            cursor.execute('SELECT codigo, nome, quantidade, preco FROM produtos WHERE codigo = ?', (codigo_produto,))
 
-      
+            procurar = cursor.fetchone ()
+            if procurar is None:
+                  
+                  print ('Esse codigo nao existe')
+
+            else: 
+                  codigo, nome, quantidade, preco = procurar
+
+                  print ('\n===================== PRODUTO ENCONTRADO =====================')
+                  print (f'Código:             {codigo}')
+                  print (f'Nome:               {nome}')
+                  print (f'Quantidade:         {quantidade}')
+                  print (f'Preco:              {preco:.2f}€ ')
+                  print ('===============================================================')
+
 
 

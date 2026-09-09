@@ -1,5 +1,5 @@
-from database.database import banco_dados, cursor
-from produtos.produtos import produto
+from Backend.database.database import banco_dados, cursor
+from Backend.produtos.produtos import Produto
 
 
 #===================================
@@ -22,7 +22,7 @@ while True:
 
     if opção == 1:
 
-        adicionar = produto.adicionar_produto()
+        adicionar = Produto.adicionar_produto()
         cursor.execute ("""INSERT INTO produtos 
         (codigo, nome, quantidade, preco, validade, data_criacao )
         VALUES(:codigo, :nome, :quantidade, :preco, :validade, :data_formatada)""", adicionar)
@@ -32,11 +32,11 @@ while True:
         
     elif opção == 2:
 
-        adicionar.remover_produto()
+        Produto.remover_produto()
 
     elif opção == 3:
 
-        adicionar.Ver_produtos()
+        Produto.Procurar_produtos()
         
 
                         
