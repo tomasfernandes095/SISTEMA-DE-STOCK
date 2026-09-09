@@ -1,1 +1,7 @@
-print ('\033[3;37m Hello World!\033[m')
+from fastapi import FastAPI
+
+app = FastAPI ()
+print (app)
+
+
+
