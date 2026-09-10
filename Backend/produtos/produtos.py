@@ -54,6 +54,7 @@ class Produto:
       # //  REMOVER OS PRODUTOS   // 
       def remover_produto ():
             remover= int (input('Escolhe o id do produto a remover: '))
+
             cursor.execute('DELETE FROM produtos WHERE id = ?', (remover,))
 
             banco_dados.commit()
@@ -64,21 +65,15 @@ class Produto:
             print ("Removido com sucesso!")
             
 
-      
-
-      
-                  
-
-
       # //  VER OS PRODUTOS   // 
       def Ver_produtos ():
 
             print (''' ===================== VER PRODUTOS =====================''')
             
-            cursor.execute('SELECT id, nome, quantidade, preco FROM produtos')
+            cursor.execute('SELECT id, codigo, nome, quantidade, preco FROM produtos')
             procurar = cursor.fetchall()
 
-            for id,'', nome, quantidade, preco in procurar:
+            for id, codigo, nome, quantidade, preco in procurar:
 
                   print (f'\nId: {id}')
                   print (f'Nome: {nome}')
@@ -109,6 +104,6 @@ class Produto:
                   print (f'Quantidade:         {quantidade}')
                   print (f'Preco:              {preco:.2f}€ ')
                   print ('===============================================================')
-
+      
 
 

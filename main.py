@@ -26,7 +26,7 @@ while True:
         adicionar = Produto.adicionar_produto()
         
         cursor.execute ("""INSERT INTO produtos 
-        (codigo, nome, quantidade, preco, validade, data_criacao )
+        (id, codigo, nome, quantidade, preco, validade, data_criacao )
         VALUES(:codigo, :nome, :quantidade, :preco, :validade, :data_formatada)""", 
         {
             "codigo": adicionar.codigo,
