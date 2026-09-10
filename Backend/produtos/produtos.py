@@ -9,15 +9,16 @@ from datetime import datetime, date
 #===================================
 
 class Produto:
-      def __init__ (self, nome, codigo, quantidade, preco, validade ):
+      def __init__ (self, nome, codigo, quantidade, preco, validade, data_formatada ):
 
             self.nome = nome
             self.codigo = codigo
             self.quantidade = quantidade
             self.preco = preco
             self.validade = validade
+            self.data_formatada = data_formatada
 
-      def adicionar_produto(self):
+      def adicionar_produto():
 
             codigo = str (input ('Codigo: '))
             nome = str (input('Nome do produto: '))
@@ -74,7 +75,15 @@ class Produto:
 
             print (''' ===================== VER PRODUTOS =====================''')
             
-            cursor.execute('WHERE id, nome, quantidade, preco FROM produtos')
+            cursor.execute('SELECT id, nome, quantidade, preco FROM produtos')
+            procurar = cursor.fetchall()
+
+            for id,'', nome, quantidade, preco in procurar:
+
+                  print (f'\nId: {id}')
+                  print (f'Nome: {nome}')
+                  print (f'Quantidade: {quantidade}')
+                  print (f'Preco: {preco}€')
 
 
 
