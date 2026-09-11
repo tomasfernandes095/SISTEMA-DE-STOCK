@@ -1,5 +1,5 @@
 from Backend.database.database import banco_dados, cursor
-from Backend.produtos.produtos import Produto
+from Backend.services.produto_service import ProdutoService
 import time
 
 #===================================
@@ -21,35 +21,22 @@ while True:
 
     opção = int (input('\nEscolhe uma opção: '))
 
+    service = ProdutoService (cursor, banco_dados)
+            
     if opção == 1:
 
-        adicionar = Produto.adicionar_produto()
-        
-        cursor.execute ("""INSERT INTO produtos 
-        (id, codigo, nome, quantidade, preco, validade, data_criacao )
-        VALUES(:codigo, :nome, :quantidade, :preco, :validade, :data_formatada)""", 
-        {
-            "codigo": adicionar.codigo,
-            "nome": adicionar.nome,
-            "quantidade": adicionar.quantidade,
-            "preco": adicionar.preco,
-            "validade": adicionar.validade,
-            "data_formatada": adicionar.data_formatada
-        })
-        time.sleep (3)
-        banco_dados.commit()
-        
+        service.adicionar_produto()
         
     elif opção == 2:
 
-        Produto.remover_produto()
+        service.remover_produto()
 
     elif opção == 3:
 
-        Produto.Ver_produtos()
+        service.Ver_produtos()
 
     elif opção == 4: 
-        Produto.Procurar_produtos ()
+        service.Procurar_produtos ()
         
 
                         
