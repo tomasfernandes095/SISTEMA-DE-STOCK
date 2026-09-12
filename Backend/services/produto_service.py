@@ -1,6 +1,10 @@
-from Backend.database.database import cursor,banco_dados
 from datetime import datetime, date
 from Backend.models.produtos import Produto
+import time
+from rich import print
+from rich.live import Live
+
+
 
 class ProdutoService:
 
@@ -92,7 +96,7 @@ class ProdutoService:
     def Procurar_produtos (self):
         print (''' ===================== PROCURA DE PRODUTOS =====================''')
 
-        codigo_produto = (input('Código do produto:'))
+        codigo_produto = input('Código do produto:')
 
         self.cursor.execute('SELECT codigo, nome, quantidade, preco FROM produtos WHERE codigo = ?', (codigo_produto,))
 
@@ -104,12 +108,78 @@ class ProdutoService:
         else: 
             codigo, nome, quantidade, preco = procurar
 
-            print ('\n===================== PRODUTO ENCONTRADO =====================')
+            print ('\n\n===================== PRODUTO ENCONTRADO =====================')
             print (f'Código:             {codigo}')
             print (f'Nome:               {nome}')
             print (f'Quantidade:         {quantidade}')
             print (f'Preco:              {preco:.2f}€ ')
             print ('===============================================================')
-        
 
 
+
+    def Alterar_produto (self):
+
+        while True:
+            
+            produto_alterar = input ('Código do produto a alterar: ')
+            
+            self.cursor.execute ('SELECT codigo, nome, quantidade, preco FROM produtos WHERE codigo = ?', (produto_alterar,))
+
+            encontrar = self.cursor.fetchone()
+
+            animacao_pontos = [
+                "[blink].  [/blink]",
+                "[blink].. [/blink]",
+                "[blink]...[/blink]"
+                    ]
+
+            # O Live mantém o terminal atualizado no mesmo lugar
+            with Live("", refresh_per_second=3) as live:
+             # Simula uma tarefa que demora 6 segundos
+                for i in range(6):
+                # Altera o texto a cada segundo usando o operador resto (%)
+                    ponto_atual = animacao_pontos[i % len(animacao_pontos)]
+                    live.update(f"A procurar produto {ponto_atual}")
+                    time.sleep(1)
+
+            if not encontrar:
+                print ('[bold red]Este código nao existe[/]\n')
+                
+            else:
+                codigo, nome, quantidade, preco= encontrar
+
+                print ('\n\n===================== PRODUTO ENCONTRADO =====================')
+                print (f'Código:             {codigo}')
+                print (f'Nome:               {nome}')
+                print (f'Quantidade:         {quantidade}')
+                print (f'Preco:              {preco:.2f}€ ')
+                print ('===============================================================')
+
+                
+                Escolha = input('Deseja alterar o produto (S/N)?')
+
+                while True:
+
+                    if Escolha == 'S' or 'Sim' or 'sim':
+                                        
+                        while True:
+                                
+                                print ('\n\n===================== ALTERAR PRODUTO =====================')                
+                                print ('                     [ 1 ] Alterar codigo')
+                                print ('                     [ 2 ] Alterar Nome')
+                                print ('                     [ 1 ] Alterar quantidade')
+                                print ('                     [ 1 ] Alterar preco')
+                                print ('===============================================================')                
+
+                                opcao = int (input('Escolhe o numero da função que queres alterar: '))
+
+                    elif Escolha == 'N' or 'Nao' or 'nao':
+
+                        print  ('Obrigado por usar ')
+                        
+
+                    else: 
+
+                        break
+
+                
