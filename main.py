@@ -16,6 +16,7 @@ while True:
             [ 2 ] Remover produto
             [ 3 ] Ver produtos
             [ 4 ] Procurar produtos
+            [ 5 ] Alterar produtos
                         """)
 
 
@@ -37,7 +38,10 @@ while True:
 
     elif opção == 4: 
         service.Procurar_produtos ()
-        
+
+    elif opção == 5:
+
+        service.Alterar_produto()
 
                         
         
