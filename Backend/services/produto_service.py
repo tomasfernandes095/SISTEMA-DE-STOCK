@@ -1,6 +1,10 @@
-from Backend.database.database import cursor,banco_dados
 from datetime import datetime, date
 from Backend.models.produtos import Produto
+import time
+from rich import print
+from rich.live import Live
+from rich.emoji import Emoji
+
 
 class ProdutoService:
 
@@ -92,11 +96,12 @@ class ProdutoService:
     def Procurar_produtos (self):
         print (''' ===================== PROCURA DE PRODUTOS =====================''')
 
-        codigo_produto = (input('Código do produto:'))
+        codigo_produto = input('Código do produto:')
 
         self.cursor.execute('SELECT codigo, nome, quantidade, preco FROM produtos WHERE codigo = ?', (codigo_produto,))
 
         procurar = self.cursor.fetchone ()
+            
         if procurar is None:
                     
             print ('Esse codigo nao existe')
@@ -104,12 +109,123 @@ class ProdutoService:
         else: 
             codigo, nome, quantidade, preco = procurar
 
-            print ('\n===================== PRODUTO ENCONTRADO =====================')
+            print ('\n\n===================== PRODUTO ENCONTRADO =====================')
             print (f'Código:             {codigo}')
             print (f'Nome:               {nome}')
             print (f'Quantidade:         {quantidade}')
             print (f'Preco:              {preco:.2f}€ ')
             print ('===============================================================')
+
+
+
+    def Alterar_produto (self):
+
+        while True:
+
+            animacao_pontos = [
+                            "[blink].  [/blink]",
+                            "[blink].. [/blink]",
+                            "[blink]...[/blink]"
+                                ]
+            
+            # O Live mantém o terminal atualizado no mesmo lugar
+            with Live("", refresh_per_second=3) as live:
+             # Simula uma tarefa que demora 6 segundos
+                for i in range(6):
+                # Altera o texto a cada segundo usando o operador resto (%)
+                    ponto_atual = animacao_pontos[i % len(animacao_pontos)]
+                    live.update(f"Inicializando {ponto_atual}")
+                    time.sleep(0.5)
+
         
+            print ('\n[bold blue][ 0 ] Encerrar sistema [/bold blue]')
+            produto_alterar = input ('Código do produto (DIGITE 0 PARA ENCERRAR O SISTEMA): ')
+            
+            self.cursor.execute ('SELECT codigo, nome, quantidade, preco FROM produtos WHERE codigo = ?', (produto_alterar,))
 
+            encontrar = self.cursor.fetchone()
 
+            if produto_alterar == '0':
+                print  ('Obrigado por usar :thumbs_up: ')
+                break
+
+        
+            animacao_pontos = [
+                "[blink].  [/blink]",
+                "[blink].. [/blink]",
+                "[blink]...[/blink]"
+                    ]
+
+            # O Live mantém o terminal atualizado no mesmo lugar
+            with Live("", refresh_per_second=3) as live:
+             # Simula uma tarefa que demora 6 segundos
+                for i in range(6):
+                # Altera o texto a cada segundo usando o operador resto (%)
+                    ponto_atual = animacao_pontos[i % len(animacao_pontos)]
+                    live.update(f"A procurar produto {ponto_atual}")
+                    time.sleep(0.5)
+
+            if not encontrar:
+                print ('[bold red]Este código nao existe[/]\n')
+                
+            else:
+                codigo, nome, quantidade, preco= encontrar
+
+                print ('\n\n===================== PRODUTO ENCONTRADO =====================')
+                print (f'Código:             {codigo}')
+                print (f'Nome:               {nome}')
+                print (f'Quantidade:         {quantidade}')
+                print (f'Preco:              {preco:.2f}€ ')
+                print ('===============================================================')
+                
+
+                
+                Escolha =str(input('Deseja alterar o produto (S/N)?'))
+
+            try:
+
+                if Escolha.lower() not in ('s', 'sim'):
+                    print ('[green]Sem alteraçoes[/green]')
+                    print ('')                            
+                           
+                else:               
+                    while True:
+
+                        print ('\n===================== ALTERAR PRODUTO =====================')                
+                        print ('                     [ 1 ] Alterar codigo')
+                        print ('                     [ 2 ] Alterar Nome')
+                        print ('                     [ 3 ] Alterar preco')
+                        print ('                     [bold blue][ 0 ] Voltar [/bold blue]      ')
+                        print ('===============================================================')              
+                        opcao =int(input('Escolhe o numero da função que queres alterar: '))
+
+                        if opcao == 1:
+                            codigo_novo = int(input('Qual o código novo do produto: '))
+                            self.cursor.execute ('UPDATE produtos SET codigo = ? WHERE codigo = ?', (codigo_novo, produto_alterar))
+                            self.conexao.commit () 
+                            print (f'\n\nAlteraste o codigo: {produto_alterar} | Ficando: {codigo_novo}')
+
+                        elif opcao == 2:
+                            nome_novo = str(input('Qual o nome novo do produto: '))
+                            self.cursor.execute ('UPDATE produtos SET nome = ? WHERE codigo = ?', (nome_novo, produto_alterar))
+                            self.conexao.commit () 
+                            print (f'\n\nAlteraste o codigo: {nome} | Ficando: {nome_novo}')
+
+                        elif opcao == 3:
+                            preco_novo =str(input('Qual preço novo do produto: '))
+
+                            preco_final = preco_novo.replace('R$','').replace('€','').replace('$','')
+                            preco_final = float(preco_final)
+                            self.cursor.execute ('UPDATE produtos SET preco = ? WHERE codigo = ?', (preco_final, produto_alterar))
+                            self.conexao.commit () 
+                            print (f'\n\nAlteraste o codigo: {preco} | Ficando: {preco_novo}')
+
+                        elif opcao == 0:
+                            print  ('Obrigado por usar :thumbs_up: ')
+                            break
+
+            except:
+                  print (f'ERRO: Escreve um numero ou uma letra')
+                    
+
+                
