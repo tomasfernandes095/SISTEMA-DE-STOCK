@@ -3,7 +3,6 @@ from Backend.models.produtos import Produto
 import time
 from rich import print
 from rich.live import Live
-from rich.emoji import Emoji
 
 
 class ProdutoService:
