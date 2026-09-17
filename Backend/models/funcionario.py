@@ -1,13 +1,15 @@
 class Funcionario: 
     nome: str
-    numero: int
+    email: str
+    password: str
     cargo: str
-    ativo: bool
-    def __init__ (self, nome, numero_telemovel, cargo, ativo ):
+
+    def __init__ (self, nome, email, password, cargo):
         self.nome = nome
-        self.numero = numero_telemovel
+        self.email = email
+        self.password = password
         self.cargo = cargo
-        self.ativo = ativo
+        
 
 
 
