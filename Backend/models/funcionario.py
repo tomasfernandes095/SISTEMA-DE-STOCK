@@ -7,7 +7,7 @@ class Funcionario:
         self.nome = nome
         self.numero = numero_telemovel
         self.cargo = cargo
-        self.ativo = True
+        self.ativo = ativo
 
 
 
